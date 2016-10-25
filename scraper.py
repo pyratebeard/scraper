@@ -1,11 +1,8 @@
 #!/usr/bin/env python
 #
-#  ▓▓▓▓▓▓▓▓▓▓
-# ░▓ about  ▓ command scraper using pxssh
-# ░▓ author ▓ pyratebeard <root@pyratebeard.net>
-# ░▓ code	 ▓ http://code.pyratebeard.net/scraper
-# ░▓▓▓▓▓▓▓▓▓▓
-# ░░░░░░░░░░
+#   about   send command(s) to multiple servers using pxssh
+#   author  pyratebeard <root@pyratebeard.net>
+#   code    http://code.pyratebeard.net/scraper
 #
 
 import os
@@ -30,7 +27,7 @@ def get_args():
 
 # lets do this
 def main():
-	
+
 	get_args()
 
 	# get creds
