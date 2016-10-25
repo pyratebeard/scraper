@@ -15,6 +15,12 @@ import socket
 import pxssh
 import traceback
 
+# set global variables
+userHome = os.path.expanduser("~")
+user = ""
+passwd = ""
+sessionToken = os.path.join(userHome, ".scraper.token")
+
 # take arguments from command
 # if no args specified output error
 def get_args():
