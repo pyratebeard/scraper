@@ -50,6 +50,38 @@ def writeLog(msg, state):
 		if state == "WARN":
 			logging.warning(msg)
 
+# if there is no token, or it has expired, we create one
+def createToken():
+	user = raw_input("Username: ")
+	passwd = getpass("Password: ")
+	with open(sessionToken, "a") as token:
+		token.write("%s\n%s" %(user, passwd))
+
+	return user, passwd
+
+# if there is a token that is less than 10 mins old we load the creds
+# over 10 mins, or no token, we create a new one
+def checkToken():
+	now = datetime.now().strftime("%s")
+	expiry = (datetime.now() - timedelta(minutes = 10)).strftime("%s")
+	if os.path.isfile(sessionToken):
+		tokenMtime = datetime.fromtimestamp(os.path.getmtime(sessionToken)).strftime("%s")
+		if tokenMtime <= expiry:
+			os.remove(sessionToken)
+			print("Cached credentials have expired")
+			user, passwd = createToken()
+		else:
+			print("Using cached credentials")
+			lines = [line.strip() for line in open(sessionToken)]
+			user = lines[0]
+			passwd = lines[1]
+	else:
+		print("No cached credentials")
+		user, passwd = createToken()
+
+	return user, passwd
+
+
 # lets do this
 def main():
 
