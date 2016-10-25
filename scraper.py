@@ -39,6 +39,17 @@ def logConf():
 
 	logging.basicConfig(format="%(asctime)s %(levelname)s : %(message)s",datefmt="%H:%M:%S",filename=scraperLog,filemode="a",level=logging.INFO)
 
+# write log to file or stdout depending on output arg
+def writeLog(msg, state):
+	if not args.output:
+		msg = state + " " + msg
+		print(msg)
+	else:
+		if state == "INFO":
+			logging.info(msg)
+		if state == "WARN":
+			logging.warning(msg)
+
 # lets do this
 def main():
 
