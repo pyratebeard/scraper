@@ -31,6 +31,14 @@ def getArgs():
 	args = parser.parse_args()
 	return args
 
+# configure log file format
+def logConf():
+	global scraperLog
+	logName = args.output
+	scraperLog = os.path.join(userHome, logName)
+
+	logging.basicConfig(format="%(asctime)s %(levelname)s : %(message)s",datefmt="%H:%M:%S",filename=scraperLog,filemode="a",level=logging.INFO)
+
 # lets do this
 def main():
 
