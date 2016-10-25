@@ -21,11 +21,10 @@ user = ""
 passwd = ""
 sessionToken = os.path.join(userHome, ".scraper.token")
 
-# take arguments from command
-# if no args specified output error
-def get_args():
+# set available arguments for script
+def getArgs():
 	global args
-	parser = argparse.ArgumentParser(description='SSH Scraper for running commands on multiple servers')
+	parser = argparse.ArgumentParser(description='send command(s) to multiple servers using pxssh')
 	parser.add_argument('-i', '--input', required=True, action='store', help='List of hostnames')
 	parser.add_argument('-o', '--output', required=False, action='store', help='Output file')
 	parser.add_argument('-c', '--command', required=False, action='store', help='Command list file')
@@ -35,7 +34,7 @@ def get_args():
 # lets do this
 def main():
 
-	get_args()
+	getArgs()
 
 	# get creds
 	user = raw_input('Username: ')
