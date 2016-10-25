@@ -89,6 +89,31 @@ def sendCommand(s, command):
 	s.logout()
 	s.close()
 
+# if the hostname resolves we try to login
+# if not successful output error - 
+## this needs to be improved to give greater detail
+def login(server, user, passwd):
+	s = pxssh.pxssh()
+	try:
+		if s.login(server, user, passwd):
+			msg = "%s - login successful" % server
+			writeLog(msg, "INFO")
+			if not args.command:
+				sendCommand(s, command)
+			else:
+				commands = [line.strip() for line in open(args.command)]
+				for i in range(len(commands)):
+					sendCommand(s, commands[i])
+		else:
+			msg = "%s - login unsuccessful" % server
+			writeLog(msg, "WARN")
+	except pxssh.ExceptionPxssh as e:
+		msg = "%s - login unsuccessful - %s" %(server, str(e))
+		writeLog(msg, "WARN")
+	except Exception as e:
+		msg = "%s - login unsuccessful - %s" %(server, str(e))
+		writeLog(msg, "WARN")
+
 # lets do this
 def main():
 
