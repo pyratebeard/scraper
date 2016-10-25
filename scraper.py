@@ -7,12 +7,13 @@
 
 import os
 import sys
-import time
+import argparse
+import logging
+from getpass import getpass
+from datetime import datetime, timedelta
+import socket
 import pxssh
 import traceback
-import getpass
-import argparse
-import socket
 
 # take arguments from command
 # if no args specified output error
