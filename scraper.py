@@ -81,6 +81,13 @@ def checkToken():
 
 	return user, passwd
 
+# pass the command(s) to the prompt
+def sendCommand(s, command):
+	s.sendline(command)
+	s.prompt()
+	writeLog(s.before, "INFO")
+	s.logout()
+	s.close()
 
 # lets do this
 def main():
