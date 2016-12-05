@@ -15,10 +15,10 @@ import socket
 import pxssh
 
 # set global variables
-userHome = os.path.expanduser("~")
+user_home = os.path.expanduser("~")
 user = ""
 passwd = ""
-sessionToken = os.path.join(userHome, ".scraper.token")
+session_token = os.path.join(user_home, ".scraper.token")
 
 # set available arguments for script
 def getArgs():
@@ -32,11 +32,11 @@ def getArgs():
 
 # configure log file format
 def logConf():
-	global scraperLog
-	logName = args.output
-	scraperLog = os.path.join(userHome, logName)
+	global scraper_log
+	log_name = args.output
+	scraper_log = os.path.join(user_home, log_name)
 
-	logging.basicConfig(format="%(asctime)s %(levelname)s : %(message)s",datefmt="%H:%M:%S",filename=scraperLog,filemode="a",level=logging.INFO)
+	logging.basicConfig(format="%(asctime)s %(levelname)s : %(message)s",datefmt="%H:%M:%S",filename=scraper_log,filemode="a",level=logging.INFO)
 
 # write log to file or stdout depending on output arg
 def writeLog(msg, state):
@@ -53,7 +53,7 @@ def writeLog(msg, state):
 def createToken():
 	user = raw_input("Username: ")
 	passwd = getpass("Password: ")
-	with open(sessionToken, "a") as token:
+	with open(session_token, "a") as token:
 		token.write("%s\n%s" %(user, passwd))
 
 	return user, passwd
@@ -63,15 +63,15 @@ def createToken():
 def checkToken():
 	now = datetime.now().strftime("%s")
 	expiry = (datetime.now() - timedelta(minutes = 10)).strftime("%s")
-	if os.path.isfile(sessionToken):
-		tokenMtime = datetime.fromtimestamp(os.path.getmtime(sessionToken)).strftime("%s")
-		if tokenMtime <= expiry:
-			os.remove(sessionToken)
+	if os.path.isfile(session_token):
+		token_mtime = datetime.fromtimestamp(os.path.getmtime(session_token)).strftime("%s")
+		if token_mtime <= expiry:
+			os.remove(session_token)
 			print("Cached credentials have expired")
 			user, passwd = createToken()
 		else:
 			print("Using cached credentials")
-			lines = [line.strip() for line in open(sessionToken)]
+			lines = [line.strip() for line in open(session_token)]
 			user = lines[0]
 			passwd = lines[1]
 	else:
@@ -133,15 +133,15 @@ def main():
 	servers = [server.strip() for server in open(args.input)]
 
 	# for stdout if an output file is used
-	global totalNum
-	totalNum = len(servers)
+	global total_num
+	total_num = len(servers)
 	num = 0
 
 	for server in servers:
 		try:
 			num = num + 1
 			# this can be improved to clear the whole line...
-			sys.stdout.write("[%s/%s] %s\t\t\r" %(num, totalNum, server))
+			sys.stdout.write("[%s/%s] %s\t\t\r" %(num, total_num, server))
 			sys.stdout.flush()
 			# ensure the hostname exists before attempting to log on
 			socket.getaddrinfo(server,0,0,0,0)
